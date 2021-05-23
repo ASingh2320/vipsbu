@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, Button } from 'react-native';
 
 const Login = (props) => {
     return (
-        <View>Login</View>
+        <View>Test</View>
     );
 };
 
