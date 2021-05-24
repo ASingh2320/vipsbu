@@ -57,7 +57,7 @@ export default function App() {
     </View>
     }
     {showLogin && <Login/>}
-    {showFeed && <UseFeed/>}
+    {showFeed && <UseFeed setShowMap={setShowMap}/>}
     {showMap && <Map/>}
     {showSettings && <Setting/>}
   </View>
