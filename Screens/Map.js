@@ -14,6 +14,7 @@ const Map = (props) => {
                 style={{
                 flexDirection: "row",
                 backgroundColor: "grey",
+                paddingTop: "10%",
                 }}
             >
                 <Button title="Login" onPress={props.setShowLogin}/>
@@ -26,6 +27,7 @@ const Map = (props) => {
                 style={{
                 flexDirection: "row",
                 backgroundColor: "grey",
+                paddingTop: "10%",
                 }}
             >
                 <Button title="+" onPress={toggle}/>

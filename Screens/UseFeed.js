@@ -11,8 +11,33 @@ const UseFeed = (props) => {
         setFeed("More details, the better!");
     }
     return (
-        <View style ={{backgroundColor: "#F0F0F0"}}>
-            <View style ={{width: "10%"}}> 
+        <View style ={{backgroundColor: "#F0F0F0", paddingTop: "10%",}}>
+            <View style ={{width: "20%"}}> 
+                <Button title= "map" onPress={props.setShowMap}/>
+            </View>
+            <Text style = {styles.titleText}> User Feedback</Text>
+            <Text style = {styles.baseText}>Please describe your issue:</Text>
+            <View>
+            <TextInput multiline
+            numberOfLines={4} 
+                value={feedtext} onChangeText={setFeed}/>
+            </View>
+            <View style = {{}}> 
+                <Button title= "Submit" onPress={savefeedback} value={feedtext}/>
+            </View>
+        </View>
+    );
+};
+const styles = StyleSheet.create({
+    baseText: {
+    },
+    titleText: {
+      fontSize: 20,
+      fontWeight: "bold"
+    }
+  });
+/*
+<View style ={{width: "10%"}}> 
                 <Button title= "map" onPress={props.setShowMap}/>
             </View>
             <Text style = {{textAlign: "center", fontSize: "30px"}}> User Feedback</Text>
@@ -25,8 +50,6 @@ const UseFeed = (props) => {
             <View style = {{}}> 
                 <Button title= "Submit" onPress={savefeedback} value={feedtext}/>
             </View>
-        </View>
-    );
-};
+*/
 
 export default UseFeed;

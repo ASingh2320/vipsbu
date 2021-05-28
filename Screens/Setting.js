@@ -4,7 +4,9 @@ import { StyleSheet, Text, View, Button } from 'react-native';
 
 const Setting = (props) => {
     return (
-        <View>Settings</View>
+        <View>
+            <Text>Settings</Text>
+        </View>
     );
 };
 
