@@ -49,7 +49,7 @@ export default function App() {
     <View>
     {
       menu &&
-    <View>
+    <View style= {styles.container}>
     <Button title="Login" onPress={setShowLogin}/> 
     <Button title="UseFeed" onPress={setShowFeed}/>
     <Button title="Map" onPress={setShowMap}/>
@@ -66,9 +66,6 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    paddingTop: 40
   },
 });
