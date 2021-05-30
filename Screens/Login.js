@@ -4,7 +4,14 @@ import { StyleSheet, Text, View, Button } from 'react-native';
 
 const Login = (props) => {
     return (
-        <View><Text>Test</Text></View>
+        <View>
+            <Text>Test</Text>
+            <Text>Test</Text>
+            <Text>Test</Text>
+            <Text>Test</Text>
+            <Text>Test</Text>
+            <Text>Test</Text>
+        </View>
     );
 };
 
