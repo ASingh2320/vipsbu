@@ -14,6 +14,9 @@ const Login = (props) => {
             <Text> Test </Text>
             <Text> Test </Text>
             <Text> More </Text>
+            <Text> More </Text>
+            <Text> More </Text>
+            <Text> More </Text>
         </View>
     );
 };
