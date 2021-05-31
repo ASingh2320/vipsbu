@@ -8,7 +8,7 @@ const UseFeed = (props) => {
     const savefeedback = () => {
         //Once we set up database, this function will save feedback to database.
         console.log(feedtext);
-        setFeed("More details, the better!");
+        setFeed("More details, the better!!!");
     }
     return (
         <View style ={{backgroundColor: "#F0F0F0", paddingTop: "10%",}}>
