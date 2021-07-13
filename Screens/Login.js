@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect }  from 'react';
 import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
+import {auth} from "./firebase"
 
 const Login = (props) => {
     const[emailtext, setEmail] = useState("");
@@ -9,6 +10,7 @@ const Login = (props) => {
 
     const checkLogin = () => {
         setFail(true);
+        return auth.createUserWithEmailAndPassword(emailtext, pwtext);
     }
     const [showNav, toggleNav] = useState(false);
     const toggle = () => {
@@ -28,7 +30,7 @@ const Login = (props) => {
             </View>
             <Button title="Submit" onPress={checkLogin}/>
             {
-                failed && <Text>Email or Password is incorrect</Text>
+                failed && <Text>{emailtext}</Text>
             }
             <View>
             {showNav ?

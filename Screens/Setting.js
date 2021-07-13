@@ -3,6 +3,7 @@ import React, { useState, useEffect }  from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
 
 export default function Setting() {
+    
     const [showLogin, toggleLogin] = useState(false); 
     const [darkMode, toggleDarkMode] = useState(false);
     const [manageAccount, toggleManageAccount] = useState(false);
@@ -41,4 +42,5 @@ export default function Setting() {
             <Button title="Logout" onPress={setShowLogin}/>
         </View>
     )
+    
 }

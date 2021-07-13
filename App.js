@@ -9,9 +9,9 @@ import Map from './Screens/Map';
 export default function App() {
   const [showLogin, toggleLogin] = useState(false); 
   const [showFeed, toggleFeed]   = useState(false);
-  const [showMap, toggleMap]     = useState(false);
+  const [showMap, toggleMap]     = useState(true);
   const [showSettings, toggleSettings] = useState(false);
-  const [menu, toggleMenu] = useState(true);
+  const [menu, toggleMenu] = useState(false);
 
   const setShowLogin = () => {
 		toggleLogin(!showLogin);

@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect }  from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, Button, Dimensions } from 'react-native';
+import MapView from 'react-native-maps'; 
 
 const Map = (props) => {
     const [showNav, toggleNav] = useState(false);
@@ -9,32 +10,26 @@ const Map = (props) => {
     }
     return (
         <View>
-            {showNav ?
-            <View
-                style={{
-                flexDirection: "row",
-                backgroundColor: "grey",
-                paddingTop: "10%",
-                }}
-            >
-                <Button title="Login" onPress={props.setShowLogin}/>
-                <Button title="UseFeed" onPress={props.setShowFeed}/>
-                <Button title="Settings" onPress={props.setShowSet}/>
-                <Button title="X" onPress={toggle}/>
+            <View>
+                <MapView style={styles.map} 
+                region = {{
+                    latitude: 40.904706981915076,
+                    longitude:  -73.1238790709138,
+                    latitudeDelta: 0.01,
+                    longitudeDelta: 0.01,
+                }}/>
             </View>
-            :
-            <View
-                style={{
-                flexDirection: "row",
-                backgroundColor: "grey",
-                paddingTop: "10%",
-                }}
-            >
-                <Button title="+" onPress={toggle}/>
-            </View>
-            }
+            
         </View>
     );
 };
-
+const styles = StyleSheet.create({
+    map: {
+      width: Dimensions.get('window').width,
+      height: Dimensions.get('window').height,
+    },
+  });
 export default Map;
+/*
+
+*/
