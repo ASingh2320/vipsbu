@@ -5,6 +5,7 @@ import Login from './Screens/Login';
 import UseFeed from './Screens/UseFeed';
 import Setting from './Screens/Setting';
 import Map from './Screens/Map';
+import IndoorMap from './Screens/IndoorMap';
 
 export default function App() {
   const [showLogin, toggleLogin] = useState(false); 
@@ -12,6 +13,7 @@ export default function App() {
   const [showMap, toggleMap]     = useState(true);
   const [showSettings, toggleSettings] = useState(false);
   const [menu, toggleMenu] = useState(false);
+  const [showIndoor, toggleIndoor] = useState(false);
 
   const setShowLogin = () => {
 		toggleLogin(!showLogin);
@@ -19,6 +21,7 @@ export default function App() {
     toggleMap(false);
     toggleSettings(false);
     toggleMenu(false);
+    toggleIndoor(false);
 	}
 
   const setShowFeed = () => {
@@ -27,6 +30,7 @@ export default function App() {
     toggleMap(false);
     toggleSettings(false);
     toggleMenu(false);
+    toggleIndoor(false);
 	}
 
   const setShowMap = () => {
@@ -35,6 +39,7 @@ export default function App() {
     toggleMap(!showMap);
     toggleSettings(false);
     toggleMenu(false);
+    toggleIndoor(false);
 	}
 
   const setShowSet = () => {
@@ -43,6 +48,16 @@ export default function App() {
     toggleMap(false);
     toggleSettings(!showSettings);
     toggleMenu(false);
+    toggleIndoor(false);
+	}
+  
+  const setShowIndoor = () => {
+		toggleLogin(false);
+    toggleFeed(false);
+    toggleMap(false);
+    toggleSettings(false);
+    toggleMenu(false);
+    toggleIndoor(!showIndoor);
 	}
 
   return (
@@ -58,8 +73,10 @@ export default function App() {
     }
     {showLogin && <Login/>}
     {showFeed && <UseFeed setShowMap={setShowMap}/>}
-    {showMap && <Map setShowLogin = {setShowLogin} setShowFeed={setShowFeed} setShowSet={setShowSet}/>}
+    {showMap && <Map setShowLogin = {setShowLogin} setShowFeed={setShowFeed} setShowSet={setShowSet} 
+    setShowIndoor = {setShowIndoor}/>}
     {showSettings && <Setting/>}
+    {showIndoor && <IndoorMap/>}
   </View>
   );
 }
