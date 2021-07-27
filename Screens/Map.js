@@ -21,7 +21,7 @@ const Map = (props) => {
     {name: "Physics", id: "3", latitude: 40.91572199812933, longitude: -73.12651056511166} ]);
 
     const [searchres, editsearch] = useState([]);
-    const GOOGLE_MAPS_APIKEY = 'AIzaSyCT09DTa28xAoAIxHM-j2Wc_mSGwQdpKeU';
+    const GOOGLE_MAPS_APIKEY = '';
     const [showdirect, toggledirect] = useState(false);
 
     const [start, editstart] = useState("");
