@@ -4,6 +4,9 @@ import { StyleSheet, Text, View, Button, Dimensions, TextInput, FlatList } from 
 import MapView from 'react-native-maps'; 
 import { Marker } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
+import SearchIcon from '@material-ui/icons/Search';
+import { Feather } from '@expo/vector-icons'; 
+import { MaterialIcons } from '@expo/vector-icons'; 
 
 const Item = ({ title }) => (
     <View style={styles.itementry}>
@@ -56,7 +59,8 @@ const Map = (props) => {
                 //editchoose(true);
                 editlat(buildings[i].latitude);
                 editlong(buildings[i].longitude);
-                togglepop(true);
+                //togglepop(true);
+                togglesr(true);
             }
         }
     }
@@ -81,16 +85,11 @@ const Map = (props) => {
         <Button  title = {item.name} onPress={() => floorselected(item.name)}>
         </Button>
       );
+    
     return (
         <View>
             <View>
-                <View style={styles.container}>
-                <Text>Search for building:</Text>
-                <TextInput value={target} onChangeText={edittarget}/>
-                </View>
-                <Button
-                title="Find Building"
-                onPress={updatedest}/>
+                
                 {choosetrack && 
                 <View style={styles.container}>
                     <Button
@@ -110,11 +109,7 @@ const Map = (props) => {
                  title="Find Building"
                  />
                  </View>}
-                <FlatList
-                    data={searchres}
-                    renderItem={renderItem}
-                    keyExtractor={item => item.id}
-                />
+
                 <MapView style={styles.map} 
                 region = {{
                     latitude: lat,
@@ -136,7 +131,34 @@ const Map = (props) => {
                         strokeColor="hotpink"
                         />} 
                 </MapView>
-                </View>
+                
+                    <View style={styles.container}>
+                        <Feather name="search" size={24} color="#FFFFFF" 
+                        style= {{left: 20,}}/>
+                        <TextInput value={target} 
+                            onChangeText={edittarget} 
+                            placeholder="Search for building"
+                            returnKeyType="search"
+                            onSubmitEditing={updatedest}
+                            placeholderTextColor='#FFFFFF'
+                            style={{marginHorizontal:60, color: '#FFFFFF'}}/>
+                        <MaterialIcons name="gps-not-fixed" size={24} color="#FFFFFF" style= {{ right: 20,}}/>
+                    </View>
+                    
+                    {searchroom && <View style={styles.container2}>
+                        <Feather name="search" size={24} color="#FFFFFF" 
+                        style= {{left: 20,}}/>
+                        <TextInput value={roomtext} 
+                            onChangeText={editroomtxt} 
+                            placeholder="Search for room...."
+                            returnKeyType="search"
+                            onSubmitEditing={updateroom}
+                            placeholderTextColor='#FFFFFF'
+                            style={{marginHorizontal:60, color: '#FFFFFF'}}/>
+                    </View>
+                    }
+                
+            </View>
             {showpop && 
                 <View style={styles.buildpop}>
                     <Text style={styles.poptext}>{"IMAGE"}</Text>
@@ -151,14 +173,7 @@ const Map = (props) => {
              {searchroom &&
                 <View style={styles.buildpop}> 
                 <Text style={styles.poptext}>{"IMAGE"}</Text>
-                <Text style= {styles.buildtext}>{destination + " " + floorname}</Text>
-                <View style={styles.roomsearch}>
-                    <Text>Room Name:</Text>
-                    <TextInput value={roomtext} onChangeText={editroomtxt}/>
-                </View>
-                <Button
-                title="Find Room"
-                onPress={updateroom}/>
+                <Text style= {styles.buildtext}>{destination}</Text>
              </View>}
         </View>
     );
@@ -169,12 +184,33 @@ const styles = StyleSheet.create({
       height: Dimensions.get('window').height,
     },
     container: {
-        
-        paddingTop: 40,
+        zIndex: 1,
         flexDirection: 'row',
+        position: 'absolute',
+        backgroundColor: '#c4c4c4',
+        height: 49,       
+        top: 42,
+        width: (Dimensions.get('window').width - (Dimensions.get('window').width / 10)),
+        borderRadius: 1000,
+        alignItems: 'center',
+        justifyContent: 'center',
+        alignSelf: 'center',
+      },
+      container2: {
+        zIndex: 1,
+        flexDirection: 'row',
+        position: 'absolute',
+        backgroundColor: '#c4c4c4',
+        height: 49,       
+        top: 105,
+        width: (Dimensions.get('window').width - (Dimensions.get('window').width / 10)),
+        borderRadius: 1000,
+        alignItems: 'center',
+        justifyContent: 'center',
+        alignSelf: 'center',
       },
     inputline: {
-          
+        
     },
     buildpop:{
         position: 'absolute',

@@ -107,7 +107,7 @@ const IndoorMap = (props) => {
     }
     const[route, editroute] = useState("");
     const pathfind = () =>{
-        let start = [185, 335];
+        let start = [10, 310];
         let target = [210, 285];
         let queue = [];
         let path = [start];
