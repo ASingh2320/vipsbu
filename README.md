@@ -9,10 +9,10 @@ Install notes
 
 -Then do type in the command
 
-npm install
+    npm install
 
 -Once that is complete type in the command below
 
-yarn start
+    yarn start
 
 -Then click the option to run in browser (should be above the QR code)
