@@ -16,3 +16,4 @@ Install notes
     yarn start
 
 -Then download Expo Go app on your phone. And scan the qr to open app on your phone.
+* If you are on MAC use sudo when doing commoands
