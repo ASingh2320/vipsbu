@@ -5,7 +5,7 @@ Install notes
 
 -When downloaded, go into your command prompt and cd into vipsbu-main with the command below
 
-cd <what ever the path to vipsbumain is, dont forget to use double \ (\\)>\\vipsbu-main
+    cd <what ever the path to vipsbumain is, dont forget to use double \ (\\)>\\vipsbu-main
 
 -Then do type in the command
 
