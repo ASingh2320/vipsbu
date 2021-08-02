@@ -5,14 +5,15 @@ Install notes
 
 -When downloaded, go into your command prompt and cd into vipsbu-main with the command below
 
-cd <what ever the path to vipsbumain is, dont forget to use double \ (\\)>\\vipsbu-main
+    cd <what ever the path to vipsbumain is, dont forget to use double \ (\\)>\\vipsbu-main
 
 -Then do type in the command
 
-npm install
+    npm install
 
 -Once that is complete type in the command below
 
-yarn start
+    yarn start
 
--Then click the option to run in browser (should be above the QR code)
+-Then download Expo Go app on your phone. And scan the qr to open app on your phone.
+* If you are on MAC use sudo when doing commoands
