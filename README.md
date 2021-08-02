@@ -15,4 +15,4 @@ Install notes
 
     yarn start
 
--Then click the option to run in browser (should be above the QR code)
+-Then download Expo Go app on your phone. And scan the qr to open app on your phone.
