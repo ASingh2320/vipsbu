@@ -21,7 +21,12 @@ const Map = (props) => {
 
     const [buildings, editbuild] = useState([{name: "Computer Science", id:"1", latitude: 40.91270136762428, longitude: -73.1236631969925}, 
     {name: "Humanities", id: "2", latitude: 40.91339704258264, longitude: -73.12011076714444}, 
-    {name: "Physics", id: "3", latitude: 40.91572199812933, longitude: -73.12651056511166} ]);
+    {name: "Physics", id: "3", entrances:[
+        {id: 0, latitude: 40.91572199812933, longitude: -73.12651056511166},
+        {id: 1, latitude: 40.91568600906479, longitude: -73.12613365081991},
+        {id: 2, latitude: 40.91584420298465, longitude: -73.12622268119594}]
+    } 
+    ]);
 
     const [searchres, editsearch] = useState([]);
     const GOOGLE_MAPS_APIKEY = '';
@@ -51,14 +56,15 @@ const Map = (props) => {
         toggleNav(!showNav);
     }
     
-   
+   const [entrances, editenter] = useState([]);
     const updatedest = () =>{
         for(let i = 0; i < buildings.length; i++){
             if(buildings[i].name == target){
                 editdest(target);
                 //editchoose(true);
-                editlat(buildings[i].latitude);
-                editlong(buildings[i].longitude);
+                editlat(buildings[i].entrances[0].latitude);
+                editlong(buildings[i].entrances[0].longitude);
+                editenter(buildings[i].entrances);
                 //togglepop(true);
                 togglesr(true);
             }
@@ -74,6 +80,7 @@ const Map = (props) => {
         editfname(name);
     }
     const updateroom = async () => {
+        props.setShowIndoor();
         for(let i = 0; i < rooms.length; i++){
             if(roomtext == rooms[i].name){
                 props.setShowIndoor();
@@ -89,27 +96,6 @@ const Map = (props) => {
     return (
         <View>
             <View>
-                
-                {choosetrack && 
-                <View style={styles.container}>
-                    <Button
-                    title="Enter Location"
-                    onPress={enterend}/>
-                    <Button
-                    title="Use My Location"
-                    />
-                </View>}
-                {findend &&
-                <View>
-                 <View style={styles.container}>
-                 <Text>Enter Starting Location:</Text>
-                 <TextInput value={start} onChangeText={editstart}/>
-                 </View>
-                 <Button
-                 title="Find Building"
-                 />
-                 </View>}
-
                 <MapView style={styles.map} 
                 region = {{
                     latitude: lat,
@@ -117,12 +103,15 @@ const Map = (props) => {
                     latitudeDelta: 0.001,
                     longitudeDelta: 0.001,
                 }}>
-                    <Marker
-                    coordinate = {{
-                        latitude: lat,
-                        longitude: long,
-                    }} 
-                    />
+                    {
+                        entrances.map(x =>  <Marker
+                            coordinate = {{
+                                latitude: x.latitude,
+                                longitude: x.longitude,
+                            }} 
+                            onPress={updateroom}
+                            />)
+                    }
                     {showdirect && <MapViewDirections
                         origin={origin}
                         destination={destination}
@@ -144,36 +133,13 @@ const Map = (props) => {
                             style={{marginHorizontal:60, color: '#FFFFFF'}}/>
                         <MaterialIcons name="gps-not-fixed" size={24} color="#FFFFFF" style= {{ right: 20,}}/>
                     </View>
-                    
-                    {searchroom && <View style={styles.container2}>
-                        <Feather name="search" size={24} color="#FFFFFF" 
-                        style= {{left: 20,}}/>
-                        <TextInput value={roomtext} 
-                            onChangeText={editroomtxt} 
-                            placeholder="Search for room...."
-                            returnKeyType="search"
-                            onSubmitEditing={updateroom}
-                            placeholderTextColor='#FFFFFF'
-                            style={{marginHorizontal:60, color: '#FFFFFF'}}/>
-                    </View>
-                    }
                 
             </View>
-            {showpop && 
-                <View style={styles.buildpop}>
-                    <Text style={styles.poptext}>{"IMAGE"}</Text>
-                    <Text style= {styles.buildtext}>{destination}</Text>
-                    <FlatList
-                    data={floors}
-                    renderItem={renderItem}
-                    keyExtractor={item => item.id}
-                    style={{overflow: 'scroll'}}
-                />
-             </View>}
              {searchroom &&
                 <View style={styles.buildpop}> 
                 <Text style={styles.poptext}>{"IMAGE"}</Text>
                 <Text style= {styles.buildtext}>{destination}</Text>
+                <Text style={styles.reminder}>Once you reach the building select the entrance you enter from.</Text>
              </View>}
         </View>
     );
@@ -220,6 +186,7 @@ const styles = StyleSheet.create({
         height: Dimensions.get('window').height,
         backgroundColor: '#c4c4c4',
         opacity: 0.7,
+        
     },
     poptext:{
         left: '30%',
@@ -237,6 +204,9 @@ const styles = StyleSheet.create({
     roomsearch:{
         flexDirection: 'row',
         backgroundColor: "white",
+    },
+    reminder:{
+        marginHorizontal: 50,
     }
   });
 export default Map;
