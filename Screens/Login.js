@@ -1,7 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect }  from 'react';
 import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
-import {auth} from "./firebase"
+import {auth} from "./firebase";
+import MenuStack from '../components/MenuStack';
 
 const Login = (props) => {
     const[emailtext, setEmail] = useState("");
@@ -37,13 +38,14 @@ const Login = (props) => {
             <View
                 style={{
                 flexDirection: "row",
-                backgroundColor: "grey",
+                backgroundColor: "grey"
                 }}
             >
-                <Button title="Login" onPress={props.setShowLogin}/>
+                {/* <Button title="Login" onPress={props.setShowLogin}/>
                 <Button title="UseFeed" onPress={props.setShowFeed}/>
-                <Button title="Settings" onPress={props.setShowSet}/>
-                <Button title="X" onPress={toggle}/>
+                <Button title="Settings" onPress={props.setShowSet}/> 
+                <Button title="X" onPress={toggle}/> */}
+                <MenuStack toggleMenu={toggle}/>
             </View>
             :
             <View

@@ -6,6 +6,8 @@ import UseFeed from './Screens/UseFeed';
 import Setting from './Screens/Setting';
 import Map from './Screens/Map';
 import IndoorMap from './Screens/IndoorMap';
+import MenuStack from './components/MenuStack';
+
 
 export default function App() {
   const [showLogin, toggleLogin] = useState(false); 
