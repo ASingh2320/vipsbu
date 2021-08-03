@@ -33,7 +33,12 @@
         Download Expo Go app on your phone. And scan the qr to open app on your phone.
 - **TESTING USING XCODE/ANDRIOD STUDIO**
         Make sure you have either XCode or Andriod Studio installed.
-        after you have typed yarn start press 'I' to start XCode OR 'G' to start Andriod Studio.
+        after you have typed yarn start press 'I' to start XCode OR 'A' to start Andriod Studio.
 
+
+## Notes:
+
+- if you want to reload the app after editing, you can press 'R'. Usually you dont need to do this as the app will auto refresh.
+- pressing '?' to show all commands.
 Happy Testing :)
 
