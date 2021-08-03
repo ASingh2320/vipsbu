@@ -5,7 +5,7 @@ Install instructions:
 * **Node.js**
     
     
-    install from offical [NodeJS website](https://Nodejs.org)
+        install from offical [NodeJS website](https://Nodejs.org)
 * **yarn**
         
         MAC: sudo npm install --global yarn
