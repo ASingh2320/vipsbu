@@ -3,10 +3,10 @@ Install instructions:
 
 ## Dependencies: 
 * ** Node.js **
-    install from offical [NodeJS website](www.Nodejs.org)
+    install from offical [NodeJS website](https://Nodejs.org)
 * ** yarn **
     MAC: sudo npm install --global yarn
-    WINDOWS: download from [Yarn website](www.yarnpkg.com)
+    WINDOWS: download from [Yarn website](https://yarnpkg.com)
 
 -Download code from github link in discord
 
