@@ -2,7 +2,8 @@ import React  from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Button, Alert,Image} from 'react-native';
 import { Entypo, MaterialCommunityIcons, Feather, Ionicons, AntDesign} from '@expo/vector-icons'; 
 
-
+// MenuStack: returns a view that is a horizontal stack with Profile, Bug, Map, Settings, and Exit options.
+// Parameters: toggleMenu -> used to close the menu.
 const MenuStack = ({toggleMenu}) => {
     return (
       <View style={styles.container}>
