@@ -7,20 +7,25 @@ import MapViewDirections from 'react-native-maps-directions';
 import SearchIcon from '@material-ui/icons/Search';
 import { Feather } from '@expo/vector-icons'; 
 import { MaterialIcons } from '@expo/vector-icons'; 
-
-const Item = ({ title }) => (
-    <View style={styles.itementry}>
-      <Text>{title}</Text>
-    </View>
-  );
-
+import { FontAwesome5 } from '@expo/vector-icons';
 const Map = (props) => {
     const [showNav, toggleNav] = useState(false);
     const [long, editlong] = useState(-73.12369101313207);
     const [lat, editlat] = useState( 40.91258279022605);
 
-    const [buildings, editbuild] = useState([{name: "Computer Science", id:"1", latitude: 40.91270136762428, longitude: -73.1236631969925}, 
-    {name: "Humanities", id: "2", latitude: 40.91339704258264, longitude: -73.12011076714444}, 
+    const [buildings, editbuild] = useState([
+        {name: "Computer Science", id:"1", entrances: [
+            {id: 0, latitude: 40.91293881057778, longitude: -73.12354369741176},
+            {id: 1, latitude: 40.912578827459285, longitude: -73.12374521725695},
+            {id: 2, latitude: 40.91335743282359, longitude: -73.12359164379023}
+            ]
+        }, 
+    {name: "Humanities", id: "2", entrances:[
+        {id: 0, latitude: 40.913392333170485, longitude: -73.12009573231798},
+        {id: 1, latitude: 40.9129164956508, longitude: -73.12049021935144},
+        {id: 2, latitude: 40.91324327600258, longitude: -73.11967848641721}
+    ]  
+    }, 
     {name: "Physics", id: "3", entrances:[
         {id: 0, latitude: 40.91572199812933, longitude: -73.12651056511166},
         {id: 1, latitude: 40.91568600906479, longitude: -73.12613365081991},
@@ -70,15 +75,8 @@ const Map = (props) => {
             }
         }
     }
-    const enterend = () => {
-        editchoose(false);
-        //editend(true);
-    }
-    const floorselected = async (name) => {
-        togglepop(false);
-        togglesr(true);
-        editfname(name);
-    }
+    
+    
     const updateroom = async () => {
         props.setShowIndoor();
         for(let i = 0; i < rooms.length; i++){
@@ -88,10 +86,6 @@ const Map = (props) => {
         }
         
     }
-    const renderItem = ({ item }) => (
-        <Button  title = {item.name} onPress={() => floorselected(item.name)}>
-        </Button>
-      );
     
     return (
         <View>
@@ -110,7 +104,10 @@ const Map = (props) => {
                                 longitude: x.longitude,
                             }} 
                             onPress={updateroom}
-                            />)
+                            >
+                                <FontAwesome5 name="door-open" size={24} color="black" 
+                                style ={{backgroundColor: "red", borderRadius: 5,}}/>
+                                </Marker>)
                     }
                     {showdirect && <MapViewDirections
                         origin={origin}
@@ -120,7 +117,6 @@ const Map = (props) => {
                         strokeColor="hotpink"
                         />} 
                 </MapView>
-                
                     <View style={styles.container}>
                         <Feather name="search" size={24} color="#FFFFFF" 
                         style= {{left: 20,}}/>
@@ -133,7 +129,6 @@ const Map = (props) => {
                             style={{marginHorizontal:60, color: '#FFFFFF'}}/>
                         <MaterialIcons name="gps-not-fixed" size={24} color="#FFFFFF" style= {{ right: 20,}}/>
                     </View>
-                
             </View>
              {searchroom &&
                 <View style={styles.buildpop}> 
@@ -180,21 +175,20 @@ const styles = StyleSheet.create({
     },
     buildpop:{
         position: 'absolute',
+        flexDirection: "column",
         zIndex: 1,
         top: Dimensions.get('window').height - 200,
         width: Dimensions.get('window').width,
         height: Dimensions.get('window').height,
         backgroundColor: '#c4c4c4',
         opacity: 0.7,
-        
+        alignItems: 'center'
+        //justifyContent: 'center',
     },
     poptext:{
-        left: '30%',
-        top: '1%',
-        fontSize: 50
+        fontSize: 50,
     },
     buildtext:{
-        left: '40%',
         fontSize: 25
     },
     itementry:{
