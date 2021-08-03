@@ -1,6 +1,13 @@
 # vipsbu
-Install notes
+Install instructions:
 
+##Dependencies: 
+* ** Node.js **
+    install from offical [NodeJS website](Nodejs.org)
+* ** yarn **
+    MAC: sudo npm install --global yarn
+    WINDOWS: download from [Yarn website](yarnpkg.com)
+    
 -Download code from github link in discord
 
 -When downloaded, go into your command prompt and cd into vipsbu-main with the command below
