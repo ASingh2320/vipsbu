@@ -5,11 +5,12 @@ Install instructions:
 * **Node.js**
     install from offical [NodeJS website](https://Nodejs.org)
 * **yarn**
-    MAC: sudo npm install --global yarn
-    WINDOWS: download from [Yarn website](https://yarnpkg.com)
+        MAC: sudo npm install --global yarn
 
--Download code from github link in discord
+        WINDOWS: download from [Yarn website](https://yarnpkg.com)
 
+##Instructions:
+-Download/Clone github page from this page.
 -When downloaded, go into your command prompt and cd into vipsbu-main with the command below
 
     cd <what ever the path to vipsbumain is, dont forget to use double \ (\\)>\\vipsbu-main
