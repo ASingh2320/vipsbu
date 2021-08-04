@@ -1,10 +1,10 @@
 import React  from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Button, Alert,Image} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Button, Alert,Image, ProgressViewIOSComponent} from 'react-native';
 import { Entypo, MaterialCommunityIcons, Feather, Ionicons, AntDesign} from '@expo/vector-icons'; 
 
 // MenuStack: returns a view that is a horizontal stack with Profile, Bug, Map, Settings, and Exit options.
 // Parameters: toggleMenu -> used to close the menu.
-const MenuStack = ({toggleMenu}) => {
+const MenuStack = ({toggleMenu, gotoSettings, gotoMap, gotoFeed}) => {
     return (
       <View style={styles.container}>
 
@@ -13,15 +13,15 @@ const MenuStack = ({toggleMenu}) => {
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.button}>
-        <Ionicons name="ios-bug" size={24} color="black" />
+        <Ionicons name="ios-bug" size={24} color="black" onPress={gotoFeed}/>
       </TouchableOpacity>
       
       <TouchableOpacity style={styles.button}>
-        <Ionicons name="ios-map" size={24} color="black" />
+        <Ionicons name="ios-map" size={24} color="black" onPress={gotoMap}/>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.button}>
-        <Ionicons name="ios-settings" size={24} color="black" />
+        <Ionicons name="ios-settings" size={24} color="black" onPress={gotoSettings}/>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.button} onPress={toggleMenu}>

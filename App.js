@@ -14,8 +14,8 @@ export default function App() {
   const [showFeed, toggleFeed]   = useState(false);
   const [showMap, toggleMap]     = useState(false);
   const [showSettings, toggleSettings] = useState(false);
-  const [menu, toggleMenu] = useState(true);
-  const [showIndoor, toggleIndoor] = useState(false);
+  const [menu, toggleMenu] = useState(false);
+  const [showIndoor, toggleIndoor] = useState(true);
 
   const setShowLogin = () => {
 		toggleLogin(!showLogin);
@@ -73,7 +73,8 @@ export default function App() {
     <Button title="Settings" onPress={setShowSet}/>
     </View>
     }
-    {showLogin && <Login/>}
+    {showLogin && <Login setShowSet={setShowSet} setShowMap={setShowMap} 
+    setShowFeed={setShowFeed}/>}
     {showFeed && <UseFeed setShowMap={setShowMap}/>}
     {showMap && <Map setShowLogin = {setShowLogin} setShowFeed={setShowFeed} setShowSet={setShowSet} 
     setShowIndoor = {setShowIndoor}/>}

@@ -17,7 +17,9 @@ const Login = (props) => {
     const toggle = () => {
         toggleNav(!showNav);
     }
-
+    const toset = () => {
+        props.setShowSet();
+    }
     return (
         <View style= {styles.container}>
             <Text>Login</Text>
@@ -45,7 +47,8 @@ const Login = (props) => {
                 <Button title="UseFeed" onPress={props.setShowFeed}/>
                 <Button title="Settings" onPress={props.setShowSet}/> 
                 <Button title="X" onPress={toggle}/> */}
-                <MenuStack toggleMenu={toggle}/>
+                <MenuStack toggleMenu={toggle}  gotoSettings={props.setShowSet} 
+                gotoMap={props.setShowMap} gotoFeed={props.setShowFeed}/>
             </View>
             :
             <View
