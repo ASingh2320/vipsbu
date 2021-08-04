@@ -180,9 +180,9 @@ const IndoorMap = (props) => {
             <Svg height="900" width="900">
                 
             
-                {rooms.map(room => <Rect x={room[0] + ""} y={room[1] + ""} width="20" height="20" fill="blue">
+                {/*rooms.map(room => <Rect x={room[0] + ""} y={room[1] + ""} width="20" height="20" fill="blue">
                      <Textsvg x="12.5" y="25" text-anchor="middle" fontWeight="bold" fill="black">lol</Textsvg>
-    </Rect>)}
+    </Rect>)*/}
 
                 {/*<Rect x={"10"} y="10" width="45" height="45" fill="blue"/>
                 <Textsvg x="10" y="30" fontSize="14" text-anchor="middle" fontWeight="bold" fill="black">C-1234</Textsvg>
