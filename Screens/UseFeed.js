@@ -28,7 +28,7 @@ const UseFeed = (props) => {
             id: '4',
             title: 'Other'
         }
-    ]
+    ];
 
     return (
         <View style ={{backgroundColor: "#F0F0F0", paddingTop: "10%",}}>
