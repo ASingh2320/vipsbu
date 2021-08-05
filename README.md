@@ -25,7 +25,7 @@
 
 -Once that is complete type in the command below
 
-    yarn start (if that doesnt work try npm start and type y when it asks you to install expo globally).
+    yarn start (if that doesnt work try "npm start" and type y when it asks you to install expo globally).
 
 ## Testing app:
 
