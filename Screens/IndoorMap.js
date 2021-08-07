@@ -206,7 +206,7 @@ const IndoorMap = (props) => {
                     <Textsvg x={(room[0]) + ""} y={(room[1] + 35) + ""} 
                     fontSize="13" text-anchor="middle" fontWeight="bold" fill="black">{room[2]}</Textsvg>
                 </View>)}
-                <Path d={route} stroke="green" strokeWidth="5" fill="none" />
+                <Path d={route} stroke="green" strokeWidth="6" fill="none" />
                 
             </Svg>
             </ScrollView>
