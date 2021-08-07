@@ -10,11 +10,13 @@ import MenuStack from './components/MenuStack';
 
 
 export default function App() {
+  const [entr, setEntr] = useState("ENTR 0");
+
   const [showLogin, toggleLogin] = useState(false); 
   const [showFeed, toggleFeed]   = useState(false);
-  const [showMap, toggleMap]     = useState(false);
+  const [showMap, toggleMap]     = useState(true);
   const [showSettings, toggleSettings] = useState(false);
-  const [menu, toggleMenu] = useState(true);
+  const [menu, toggleMenu] = useState(false);
   const [showIndoor, toggleIndoor] = useState(false);
 
   const setShowLogin = () => {
@@ -53,7 +55,8 @@ export default function App() {
     toggleIndoor(false);
 	}
   
-  const setShowIndoor = () => {
+  const setShowIndoor = (name) => {
+    setEntr(name);
 		toggleLogin(false);
     toggleFeed(false);
     toggleMap(false);
@@ -79,7 +82,7 @@ export default function App() {
     {showMap && <Map setShowLogin = {setShowLogin} setShowFeed={setShowFeed} setShowSet={setShowSet} 
     setShowIndoor = {setShowIndoor}/>}
     {showSettings && <Setting/>}
-    {showIndoor && <IndoorMap/>}
+    {showIndoor && <IndoorMap entered={entr}/>}
   </View>
   );
 }

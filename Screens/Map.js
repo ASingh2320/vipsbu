@@ -15,21 +15,21 @@ const Map = (props) => {
 
     const [buildings, editbuild] = useState([
         {name: "Computer Science", id:"1", entrances: [
-            {id: 0, latitude: 40.91293881057778, longitude: -73.12354369741176},
-            {id: 1, latitude: 40.912578827459285, longitude: -73.12374521725695},
-            {id: 2, latitude: 40.91335743282359, longitude: -73.12359164379023}
+            {id: 0, latitude: 40.91293881057778, longitude: -73.12354369741176, name: "ENTR 0"},
+            {id: 1, latitude: 40.912578827459285, longitude: -73.12374521725695, name: "ENTR 1"},
+            {id: 2, latitude: 40.91335743282359, longitude: -73.12359164379023, name: "ENTR 2"}
             ]
         }, 
     {name: "Humanities", id: "2", entrances:[
-        {id: 0, latitude: 40.913392333170485, longitude: -73.12009573231798},
-        {id: 1, latitude: 40.9129164956508, longitude: -73.12049021935144},
-        {id: 2, latitude: 40.91324327600258, longitude: -73.11967848641721}
+        {id: 0, latitude: 40.913392333170485, longitude: -73.12009573231798, name: "ENTR 0"},
+        {id: 1, latitude: 40.9129164956508, longitude: -73.12049021935144, name: "ENTR 1"},
+        {id: 2, latitude: 40.91324327600258, longitude: -73.11967848641721, name: "ENTR 2"}
     ]  
     }, 
     {name: "Physics", id: "3", entrances:[
-        {id: 0, latitude: 40.91572199812933, longitude: -73.12651056511166},
-        {id: 1, latitude: 40.91568600906479, longitude: -73.12613365081991},
-        {id: 2, latitude: 40.91584420298465, longitude: -73.12622268119594}]
+        {id: 0, latitude: 40.91572199812933, longitude: -73.12651056511166, name: "ENTR 0"},
+        {id: 1, latitude: 40.91568600906479, longitude: -73.12613365081991, name: "ENTR 1"},
+        {id: 2, latitude: 40.91584420298465, longitude: -73.12622268119594, name: "ENTR 2"}]
     } 
     ]);
 
@@ -77,8 +77,8 @@ const Map = (props) => {
     }
     
     
-    const updateroom = async () => {
-        props.setShowIndoor();
+    const updateroom = (name) => {
+        props.setShowIndoor(name);
         for(let i = 0; i < rooms.length; i++){
             if(roomtext == rooms[i].name){
                 props.setShowIndoor();
@@ -98,16 +98,17 @@ const Map = (props) => {
                     longitudeDelta: 0.001,
                 }}>
                     {
-                        entrances.map(x =>  <Marker
+                        entrances.map(x =>  
+                        <Marker
                             coordinate = {{
                                 latitude: x.latitude,
                                 longitude: x.longitude,
                             }} 
-                            onPress={updateroom}
+                            onPress={() => updateroom(x.name)}
                             >
-                                <FontAwesome5 name="door-open" size={24} color="black" 
+                            <FontAwesome5 name="door-open" size={24} color="black" 
                                 style ={{backgroundColor: "red", borderRadius: 5,}}/>
-                                </Marker>)
+                         </Marker>)
                     }
                     {showdirect && <MapViewDirections
                         origin={origin}
