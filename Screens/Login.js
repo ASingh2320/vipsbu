@@ -37,27 +37,23 @@ const Login = (props) => {
             }
             <View>
             {showNav ?
-            <View
-                style={{
-                flexDirection: "row",
-                backgroundColor: "grey"
-                }}
-            >
-                {/* <Button title="Login" onPress={props.setShowLogin}/>
-                <Button title="UseFeed" onPress={props.setShowFeed}/>
-                <Button title="Settings" onPress={props.setShowSet}/> 
-                <Button title="X" onPress={toggle}/> */}
+            <View style={{
+                width: 135
+                }}>
+                <View style={styles.temp}>
                 <MenuStack toggleMenu={toggle}  gotoSettings={props.setShowSet} 
-                gotoMap={props.setShowMap} gotoFeed={props.setShowFeed}/>
+                gotoMap={props.setShowMap} gotoFeed={props.setShowFeed} screenName={'login'}/>
+                </View>
             </View>
-            :
-            <View
-                style={{
-                flexDirection: "row",
-                backgroundColor: "grey",
-                }}
-            >
+            : 
+            <View style={{
+                width: 30,
+                position: 'absolute',
+                left: 100
+                }}>
+                <View style={styles.temp}>
                 <Button title="+" onPress={toggle}/>
+                </View>
             </View>
             }
         </View>
@@ -72,6 +68,16 @@ const styles = StyleSheet.create({
     },
     inputline: {
         flexDirection: 'row',
-    }
+    },
+    temp:{
+       flexDirection: "row",
+       backgroundColor: "grey",  
+       justifyContent: 'center',
+       alignItems: 'center',
+       position: 'absolute',
+       bottom: -680,
+       left: 250
+    },
+
   });
 export default Login;

@@ -10,6 +10,26 @@ const UseFeed = (props) => {
         console.log(feedtext);
         setFeed("More details, the better!!!");
     }
+
+    const options = [
+        {
+            id: '1',
+            title: 'Outdoor Navigation'
+        },
+        {
+            id: '2',
+            title: 'Indoor Navigation'
+        },
+        {
+            id: '3',
+            title: 'Logging In'
+        },
+        {
+            id: '4',
+            title: 'Other'
+        }
+    ];
+
     return (
         <View style ={{backgroundColor: "#F0F0F0", paddingTop: "10%",}}>
             <View style ={{width: "20%"}}> 
