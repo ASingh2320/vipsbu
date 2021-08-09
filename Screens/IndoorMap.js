@@ -1,28 +1,19 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect }  from 'react';
-import { StyleSheet, Text, View, Button, TextInput, ScrollView, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput, ScrollView, Dimensions, TouchableOpacity, FlatList } from 'react-native';
 import Svg, { Circle, Rect, Path, Polyline, Text as Textsvg, ForeignObject } from 'react-native-svg';
 import { AntDesign } from '@expo/vector-icons'; 
+import {Picker} from '@react-native-picker/picker';
 
 const IndoorMap = (props) => {
-    const rooms = [
-        [60, 10, "ENTR 0"], 
-        [10, 60, "100"], [10, 110, "101"], [10, 160, "102"], [10, 210, "103"], [10, 260, "104"],
-        [10, 310, "105"], [10, 360, "106"], [10, 410, "107"], [10, 460, "108"], [10, 510, "109"],  
-        [60, 560, "ENTR 1"],
-        [110, 60, "110"], [110, 110, "111"], [110, 160, "112"], [110, 210, "113"],
-        [110, 310, "114"], [110, 360, "115"], [110, 410, "116"], [110, 460, "117"], [110, 510, "118"],
-        [160, 210, "119"], [160, 310, "120"], [210, 260, "ENTR 2"]
-    ];
-    const path = [
-        [60, 60], [60, 110], [60, 160], [60, 210], [60, 260],
-        [60, 310], [60, 360], [60, 410], [60, 460],
-        [110, 260], [160, 260],
-    ]
-    const [printer, editprint] = useState("Printer");
+    const rooms = props.inmap.rooms;
+    const path = props.inmap.path;
     const [begin, editbegin] = useState(props.entered);
     const [dest, editdest] = useState("");
-    const [adjacenylist, editlst] = useState([])
+    const [adjacenylist, editlst] = useState([]);
+    const [dropdown, editdrop] = useState(false);
+    const [entrs, editentr] = useState([]);
+    const [selectedLanguage, setSelectedLanguage] = useState();
     const boxsize = 50;
     
     //TODO: Make this function follow DRY principle
@@ -133,8 +124,7 @@ const IndoorMap = (props) => {
                 }
                 
             }
-            editroute(result);
-            return 0;
+            return result;
           }
           let adjnodes = [];
           for(let i = 0; i < adjacenylist.length; i++){
@@ -177,16 +167,59 @@ const IndoorMap = (props) => {
             }
         }
         //console.log(start[2] + "/" + target[2]);
-        pathfind(start, target);
+        let route = pathfind(start, target);
+        //console.log(route);
+        editroute(route);
+    }
+    const changestart = () => {
+        console.log("toggle");
+        let entrances = [];
+        for(let i = 0; i < rooms.length; i++){
+            if(rooms[i][2].includes("ENTR")){
+                entrances.push(rooms[i][2]);
+            }
+        }
+        editentr(entrances);
+        //editdrop(true);
+        console.log(entrances);
+    }
+    const changeenter = (name) => {
+        console.log(name);
+        //editbegin()
     }
     return (
         <View style={styles.container}>
-            
             <View style={styles.searchbox}>
-                <Text>Start: </Text>
-                <Text style={{marginLeft: 60, marginRight: 10}}>{begin}</Text>
-                <AntDesign name="downcircle" size={24} color="black" />
+                <Text style={{top: 15, left: 120}}>Start: </Text>
              </View>
+             {
+                    dropdown ? 
+                    <View style={styles.drop2}>
+                        {
+                    entrs.map(x => 
+                        <TouchableOpacity onPress={() => changeenter(x)}>
+                        <View style={{backgroundColor: "red", 
+                        width: 150, 
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        backgroundColor: '#c0c0c0',
+                        height: 49,
+                        }}>
+                            
+                            <Text>{x}</Text>
+                        </View>
+                        </TouchableOpacity>)
+                    }
+                    </View>
+                    
+                    :
+                    <View style={styles.drop}>
+                    <Text style={{marginLeft: 60, marginRight: 10}}>{begin}</Text>
+                    <TouchableOpacity onPress={changestart}>
+                        <AntDesign name="downcircle" size={24} color="black" />
+                    </TouchableOpacity>
+                    </View>
+                }
              <View style={styles.searchbox2}>
                 <Text style={{marginLeft: 80}}>Destination: </Text>
                 <TextInput style={{marginLeft: 25}} placeholder="Enter Room Here"
@@ -194,19 +227,20 @@ const IndoorMap = (props) => {
                 placeholderTextColor='#FFFFFF'
                 onChangeText={editdest}
                 onSubmitEditing={getRoute}
+                onBlur={getRoute}
                 />
              </View>
             <ScrollView directionalLockEnabled={false} horizontal={true}>
             <ScrollView vertical={true}>
             <Svg height="900" width="900">
                 
-                
+            
                 {rooms.map(room => <View>
-                    <Rect x={room[0] + ""} y={room[1] + ""} width="45" height="45" fill="#FF3333"/>
+                    <Rect x={room[0] + ""} y={room[1] + ""} width="45" height="45" fill="#FF3333" />
                     <Textsvg x={(room[0]) + ""} y={(room[1] + 35) + ""} 
                     fontSize="13" text-anchor="middle" fontWeight="bold" fill="black">{room[2]}</Textsvg>
                 </View>)}
-                <Path d={route} stroke="green" strokeWidth="6" fill="none" />
+                <Path d={route} stroke="green" strokeWidth="6" fill="none" /> 
                 
             </Svg>
             </ScrollView>
@@ -231,11 +265,12 @@ const styles = StyleSheet.create({
         backgroundColor: '#c4c4c4',
         height: 49,
         borderRadius: 1000,
-        alignItems: 'center',
-        justifyContent: 'center',
+        //alignItems: 'center',
+        //justifyContent: 'center',
         alignSelf: 'center',
         width: (Dimensions.get('window').width - (Dimensions.get('window').width / 10)),
         marginVertical: 10,
+        zIndex: 1,
     },
     searchbox2: {
         flexDirection: "row",
@@ -247,6 +282,24 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         width: (Dimensions.get('window').width - (Dimensions.get('window').width / 10)),
         marginVertical: 10,
+    },
+    drop: {
+        flexDirection: 'row', 
+        top: 65, 
+        width: (Dimensions.get('window').width - (Dimensions.get('window').width / 10)),
+        left: 140, 
+        zIndex: 1, 
+        position: 'absolute'
+    },
+    drop2: {
+        flexDirection: 'column', 
+        top: 50, 
+        width: (Dimensions.get('window').width - (Dimensions.get('window').width / 10)),
+        left: 210, 
+        zIndex: 1, 
+        position: 'absolute',
+        //height: 20,
+        overflow: 'scroll'
     }
   });
 
@@ -257,3 +310,6 @@ export default IndoorMap;
                      <Textsvg x="12.5" y="25" text-anchor="middle" fontWeight="bold" fill="black">lol</Textsvg>
                  </Rect>)
                 */
+
+/*
+                    */

@@ -1,37 +1,22 @@
-import { StatusBar } from 'expo-status-bar';
+
 import React, { useState, useEffect }  from 'react';
 import { StyleSheet, Text, View, Button, Dimensions, TextInput, FlatList } from 'react-native';
 import MapView from 'react-native-maps'; 
 import { Marker } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
-import SearchIcon from '@material-ui/icons/Search';
 import { Feather } from '@expo/vector-icons'; 
 import { MaterialIcons } from '@expo/vector-icons'; 
 import { FontAwesome5 } from '@expo/vector-icons';
+import buildcoor, {indoordata} from './mapdata';
 const Map = (props) => {
     const [showNav, toggleNav] = useState(false);
     const [long, editlong] = useState(-73.12369101313207);
     const [lat, editlat] = useState( 40.91258279022605);
+    const [buildingname, editbname] = useState("");
+    const [indata, editin] = useState({});
 
-    const [buildings, editbuild] = useState([
-        {name: "Computer Science", id:"1", entrances: [
-            {id: 0, latitude: 40.91293881057778, longitude: -73.12354369741176, name: "ENTR 0"},
-            {id: 1, latitude: 40.912578827459285, longitude: -73.12374521725695, name: "ENTR 1"},
-            {id: 2, latitude: 40.91335743282359, longitude: -73.12359164379023, name: "ENTR 2"}
-            ]
-        }, 
-    {name: "Humanities", id: "2", entrances:[
-        {id: 0, latitude: 40.913392333170485, longitude: -73.12009573231798, name: "ENTR 0"},
-        {id: 1, latitude: 40.9129164956508, longitude: -73.12049021935144, name: "ENTR 1"},
-        {id: 2, latitude: 40.91324327600258, longitude: -73.11967848641721, name: "ENTR 2"}
-    ]  
-    }, 
-    {name: "Physics", id: "3", entrances:[
-        {id: 0, latitude: 40.91572199812933, longitude: -73.12651056511166, name: "ENTR 0"},
-        {id: 1, latitude: 40.91568600906479, longitude: -73.12613365081991, name: "ENTR 1"},
-        {id: 2, latitude: 40.91584420298465, longitude: -73.12622268119594, name: "ENTR 2"}]
-    } 
-    ]);
+
+    const buildings = buildcoor;
 
     const [searchres, editsearch] = useState([]);
     const GOOGLE_MAPS_APIKEY = '';
@@ -46,10 +31,6 @@ const Map = (props) => {
     const [findend, editend] = useState(false);
     const [choosetrack, editchoose] = useState(false);
     
-    let floors = [{name: 'Floor 1', id: '1'}, {name: 'Floor 2', id: '2'}, {name:'Floor 3', id: '3'},
-    {name: 'Floor 4', id: '4'}, {name: 'Floor 5', id: '5'},];
-    let rooms = [{name: '101', id: '1'}, {name: '102', id: '2'}, {name:'103', id: '3'},
-    {name: '104', id: '4'}, {name: '105', id: '5'},];
 
     const [showpop, togglepop] = useState(false);
     const [floorname, editfname] = useState("");
@@ -66,6 +47,7 @@ const Map = (props) => {
         for(let i = 0; i < buildings.length; i++){
             if(buildings[i].name == target){
                 editdest(target);
+                editbname(buildings[i].name);
                 //editchoose(true);
                 editlat(buildings[i].entrances[0].latitude);
                 editlong(buildings[i].entrances[0].longitude);
@@ -78,13 +60,11 @@ const Map = (props) => {
     
     
     const updateroom = (name) => {
-        props.setShowIndoor(name);
-        for(let i = 0; i < rooms.length; i++){
-            if(roomtext == rooms[i].name){
-                props.setShowIndoor();
+        for(let i = 0; i < indoordata.length; i++){
+            if(buildingname == indoordata[i].building){
+                props.setShowIndoor(name, indoordata[i]);
             }
         }
-        
     }
     
     return (

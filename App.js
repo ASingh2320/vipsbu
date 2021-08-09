@@ -18,6 +18,15 @@ export default function App() {
   const [showSettings, toggleSettings] = useState(false);
   const [menu, toggleMenu] = useState(false);
   const [showIndoor, toggleIndoor] = useState(false);
+  const [indoormap, editimap] = useState({
+    building: "",
+    floor: "",
+    rooms: [],
+    path: [],});
+  const [indoorbuilding, editbuild] = useState("");
+  const [indoorfloor, editfloor] = useState("");
+  const [indoorooms, editroom] = useState("");
+  //const [indoor]
 
   const setShowLogin = () => {
 		toggleLogin(!showLogin);
@@ -55,8 +64,16 @@ export default function App() {
     toggleIndoor(false);
 	}
   
-  const setShowIndoor = (name) => {
+  const setShowIndoor = (name, map) => {
     setEntr(name);
+    editimap(prevState => ({
+      ...prevState,
+      building: map.building,
+      floor: map.floor,
+      rooms: map.rooms,
+      path: map.path,
+    }));
+    //console.log(indoormap);
 		toggleLogin(false);
     toggleFeed(false);
     toggleMap(false);
@@ -82,7 +99,7 @@ export default function App() {
     {showMap && <Map setShowLogin = {setShowLogin} setShowFeed={setShowFeed} setShowSet={setShowSet} 
     setShowIndoor = {setShowIndoor}/>}
     {showSettings && <Setting/>}
-    {showIndoor && <IndoorMap entered={entr}/>}
+    {showIndoor && <IndoorMap entered={entr} inmap={indoormap}/>}
   </View>
   );
 }
