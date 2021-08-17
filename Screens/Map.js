@@ -8,57 +8,50 @@ import { Feather } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons'; 
 import { FontAwesome5 } from '@expo/vector-icons';
 import buildcoor, {indoordata} from './mapdata';
+/*
+    This class renders the outdoor map.
+    TODO: Add geolocation services, outdoor navigation
+*/
 const Map = (props) => {
-    const [showNav, toggleNav] = useState(false);
-    const [long, editlong] = useState(-73.12369101313207);
-    const [lat, editlat] = useState( 40.91258279022605);
-    const [buildingname, editbname] = useState("");
+    const [showNav, toggleNav] = useState(false); //Hook to show popup with building info
+    const [long, editlong] = useState(-73.12369101313207); //map's default longitude
+    const [lat, editlat] = useState( 40.91258279022605); //map's default latitude
+    const [buildingname, editbname] = useState(""); //name of building that is centered
     const [indata, editin] = useState({});
 
 
     const buildings = buildcoor;
-
-    const [searchres, editsearch] = useState([]);
     const GOOGLE_MAPS_APIKEY = '';
-    const [showdirect, toggledirect] = useState(false);
 
-    const [start, editstart] = useState("");
-    const [target, edittarget] = useState("");
+    const [target, edittarget] = useState(""); //Hook that records what the user is typing in searchbar
 
-    const [destination, editdest] = useState("");
-    const [origin, editorigin] = useState("");
-
-    const [findend, editend] = useState(false);
-    const [choosetrack, editchoose] = useState(false);
-    
-
-    const [showpop, togglepop] = useState(false);
-    const [floorname, editfname] = useState("");
+    const [destination, editdest] = useState(""); //Hook to be used when navigation is put in
     const [searchroom, togglesr] = useState(false);
-
-    const [roomtext, editroomtxt] = useState("");
-    const [roomdest, editroomdest] = useState("");
-    const toggle = () => {
-        toggleNav(!showNav);
-    }
     
    const [entrances, editenter] = useState([]);
+
+    /*
+        Searches for matching building name from text submitted from the searchbar
+    */
     const updatedest = () =>{
         for(let i = 0; i < buildings.length; i++){
             if(buildings[i].name == target){
                 editdest(target);
-                editbname(buildings[i].name);
-                //editchoose(true);
-                editlat(buildings[i].entrances[0].latitude);
-                editlong(buildings[i].entrances[0].longitude);
-                editenter(buildings[i].entrances);
-                //togglepop(true);
-                togglesr(true);
+                editbname(buildings[i].name); //Saves name of building
+                editlat(buildings[i].entrances[0].latitude); //Sets latitude of building
+                editlong(buildings[i].entrances[0].longitude); //Sets longitude of building
+                editenter(buildings[i].entrances); //Sets entrances of building
+                togglesr(true);//toggles popup
             }
         }
     }
     
-    
+    /*
+        @param name: name of entrance that user clicked
+
+        Changes screen to indoor screen (IndoorMap.js) and passes it the map data and name of entrance 
+        that user went in through
+    */
     const updateroom = (name) => {
         for(let i = 0; i < indoordata.length; i++){
             if(buildingname == indoordata[i].building){
@@ -70,14 +63,16 @@ const Map = (props) => {
     return (
         <View>
             <View>
+                {/*This is the Map component that renders the react native map*/}
                 <MapView style={styles.map} 
                 region = {{
+                    //default positioning of the map when it is rendered
                     latitude: lat,
                     longitude:   long,
                     latitudeDelta: 0.001,
                     longitudeDelta: 0.001,
                 }}>
-                    {
+                    {   //renders all of the entrances
                         entrances.map(x =>  
                         <Marker
                             coordinate = {{
@@ -90,28 +85,31 @@ const Map = (props) => {
                                 style ={{backgroundColor: "red", borderRadius: 5,}}/>
                          </Marker>)
                     }
-                    {showdirect && <MapViewDirections
+                    {/*Tentative code for when directions for routing are added
+                    showdirect && <MapViewDirections
                         origin={origin}
                         destination={destination}
                         apikey={GOOGLE_MAPS_APIKEY}
                         strokeWidth={3}
                         strokeColor="hotpink"
-                        />} 
+                        />*/} 
                 </MapView>
-                    <View style={styles.container}>
-                        <Feather name="search" size={24} color="#FFFFFF" 
-                        style= {{left: 20,}}/>
-                        <TextInput value={target} 
-                            onChangeText={edittarget} 
-                            placeholder="Search for building"
-                            returnKeyType="search"
-                            onSubmitEditing={updatedest}
-                            placeholderTextColor='#FFFFFF'
-                            style={{marginHorizontal:60, color: '#FFFFFF'}}/>
-                        <MaterialIcons name="gps-not-fixed" size={24} color="#FFFFFF" style= {{ right: 20,}}/>
-                    </View>
+                <View style={styles.container}> 
+                    {/*Renders the searchbar where target building is going to be typed*/}
+                    <Feather name="search" size={24} color="#FFFFFF" 
+                    style= {{left: 20,}}/>
+                    <TextInput value={target} 
+                        onChangeText={edittarget} 
+                        placeholder="Search for building"
+                        returnKeyType="search"
+                        onSubmitEditing={updatedest}
+                        placeholderTextColor='#FFFFFF'
+                        style={{marginHorizontal:60, color: '#FFFFFF'}}/>
+                    <MaterialIcons name="gps-not-fixed" size={24} color="#FFFFFF" style= {{ right: 20,}}/>
+                </View>
             </View>
-             {searchroom &&
+             {/*Renders the popup which shows the image of the building and other information about the building*/
+             searchroom &&
                 <View style={styles.buildpop}> 
                 <Text style={styles.poptext}>{"IMAGE"}</Text>
                 <Text style= {styles.buildtext}>{destination}</Text>
