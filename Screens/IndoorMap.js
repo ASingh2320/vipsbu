@@ -2,8 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect }  from 'react';
 import { StyleSheet, Text, View, Button, TextInput, ScrollView, Dimensions, TouchableOpacity, FlatList } from 'react-native';
 import Svg, { Circle, Rect, Path, Polyline, Text as Textsvg, ForeignObject } from 'react-native-svg';
-import { AntDesign } from '@expo/vector-icons'; 
-import {Picker} from '@react-native-picker/picker';
+import { AntDesign } from '@expo/vector-icons';
 
 const IndoorMap = (props) => {
     const rooms = props.inmap.rooms;
@@ -230,11 +229,28 @@ const IndoorMap = (props) => {
                 onBlur={getRoute}
                 />
              </View>
-            <ScrollView directionalLockEnabled={false} horizontal={true}>
+             {/*<Svg height="50%" width="50%" viewBox="0 0 100 100">
+          <Circle
+            cx="50"
+            cy="50"
+            r="45"
+            stroke="blue"
+            strokeWidth="2.5"
+            fill="green"
+          />
+          <Rect
+            x="15"
+            y="15"
+            width="70"
+            height="70"
+            stroke="red"
+            strokeWidth="2"
+            fill="yellow"
+          />
+          </Svg>*/}
+            {<ScrollView directionalLockEnabled={false} horizontal={true}>
             <ScrollView vertical={true}>
             <Svg height="900" width="900">
-                
-            
                 {rooms.map(room => <View>
                     <Rect x={room[0] + ""} y={room[1] + ""} width="45" height="45" fill="#FF3333" />
                     <Textsvg x={(room[0]) + ""} y={(room[1] + 35) + ""} 
@@ -245,7 +261,7 @@ const IndoorMap = (props) => {
             </Svg>
             </ScrollView>
             </ScrollView>  
-            
+                }
         </View>
     );
 };
