@@ -1,35 +1,45 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect }  from 'react';
 import { StyleSheet, Text, View, Button, TextInput, ScrollView, Dimensions, TouchableOpacity, FlatList } from 'react-native';
-import Svg, { Circle, Rect, Path, Polyline, Text as Textsvg, ForeignObject } from 'react-native-svg';
+import Svg, { Circle, Rect, Path, Polyline, G, Text as Textsvg, ForeignObject } from 'react-native-svg';
 import { AntDesign } from '@expo/vector-icons';
 
 const IndoorMap = (props) => {
     const rooms = props.inmap.rooms;
     const path = props.inmap.path;
+    
     const [begin, editbegin] = useState(props.entered);
     const [dest, editdest] = useState("");
     const [adjacenylist, editlst] = useState([]);
     const [dropdown, editdrop] = useState(false);
     const [entrs, editentr] = useState([]);
     const [selectedLanguage, setSelectedLanguage] = useState();
+    const[route, editroute] = useState("");
     const boxsize = 50;
     
-    //TODO: Make this function follow DRY principle
+    /*
+        This function creates the adjacency list that the path finding function uses
+
+        TODO: Make this function follow DRY principle
+              When backend code is added, put this in a useEffect
+    */
     const makeadjlst = () => {
-        let graph = [];
+        let graph = [];// variable that holds rooms and path nodes
+
+        //Put path nodes and room nodes in graph
         path.forEach(x => graph.push(x));
         rooms.forEach(x => graph.push(x));
-        let adjlst = [];
+
+        let adjlst = [];// Initialize adjacency list
         for(let i = 0; i < graph.length; i++){
-            adjlst.push([graph[i]]);
+            adjlst.push([graph[i]]);//push a node from the graph to start a new row 
 
             //look right
             let findx = graph[i][0] + boxsize;
             let findy = graph[i][1] + 0;
             let found = graph.find(x => (x[0] == findx) && (x[1] == findy));
             if(found){
-                adjlst[i].push(found)
+                adjlst[i].push(found)//If an adjacent node is found push it into the row
             }
             //look bottomright
             findx = graph[i][0] + boxsize;
@@ -90,11 +100,16 @@ const IndoorMap = (props) => {
             printstmt = printstmt + "\n";
         }
         printstmt= printstmt + "end\n";
-        editlst(adjlst);
+        editlst(adjlst);// Set hook to save adjacency list
         //console.log(printstmt);
         //editprint(printstmt);    
     }
-    const[route, editroute] = useState("");
+    /* 
+        @param path: array that represents a path that will be rendered
+
+        This is a helper function the pathfind function that checks if a path found goes through any rooms except 
+        for the first and last element in the path array
+    */
     const validpath = (path) => {
         for(let i = 1; i < path.length - 1; i++){
             for(let j = 0; j < rooms.length; j++){
@@ -105,13 +120,23 @@ const IndoorMap = (props) => {
         }
         return true;
     }
+    /*
+        @param start: array that represents the node where the path starts
+        @param target: array that represents the node where the path ends
+
+        @return String value that represents the path that will be rendered
+
+        Breadth first pathfinding algorithm to generate a path between rooms, entrances, etc.
+    */
     const pathfind = (start, target) =>{
-        let queue = [];
-        let path = [start];
-        queue.push(path);
+        let queue = []; //Initalize queue which keeps track of the paths generated
+        let path = [start]; //Initialize a path with just the starting node
+        queue.push(path); //Push the path with just the starting node into the queue
       
         while(queue.length != 0){
-          path = queue.shift();
+          path = queue.shift(); //Take out the first path in the queue
+
+          //If the path ends with the target node and is valid path (only goes through path nodes), return that path
           if(path[path.length-1][0] == target[0] && path[path.length-1][1] == target[1] && validpath(path)){
             let result = "";
             for(let i = 0; i < path.length; i++){
@@ -125,51 +150,62 @@ const IndoorMap = (props) => {
             }
             return result;
           }
-          let adjnodes = [];
+          let adjnodes = [];//Initialize an array to store all of the adjacent nodes
           for(let i = 0; i < adjacenylist.length; i++){
             if(path[path.length-1][0] == adjacenylist[i][0][0] && path[path.length-1][1] == adjacenylist[i][0][1]){
-              //adjnodes = adjacenylist[i];
+              //Once the last node in the path is found in adjacency list push all adjacenct nodes into adjnodes 
               adjacenylist[i].forEach(x => adjnodes.push(x));
-              adjnodes.shift();
+              adjnodes.shift();//Takes out the first node which is the last node of the path, so adjnodes only contains adjacent nodes
             }
           }
+          //Loop through each of the adjnodes
           for(let i = 0; i < adjnodes.length; i++){
             let checked = false;
+            //Loop though the path to see if the node is already in the path
             for(let j = 0; j < path.length; j++){
               if(path[j][0] == adjnodes[i][0] && path[j][1] == adjnodes[i][1]){
                 checked = true;
               }
             }
+            //If the node is not already in the path then we want to create a new path with tha node
             if(checked == false){
-              let newpath = [];
+              let newpath = [];//Initialize newpath
+              //Create a new path with the new adjacent node
               path.forEach(x => newpath.push(x));
               newpath.push(adjnodes[i]);
-              queue.push(newpath);
+
+              queue.push(newpath);//Push the new path into the queue to be checked
             }
       
           }
-          //let adjnodes = adjacenylist[0].find(checkmatch);
-          //console.log(adjnodes);
         }
     }
+    /*
+        This function gets the string to generate the path and uses its hook so it can be rendered.
+    */
     const getRoute = () => {
-        makeadjlst();
-        let start = []
+        makeadjlst(); //Creates adjacency list for the pathfinding to run on
+        let start = []; 
+
+        //Finds the start node and its properties
         for(let i = 0; i < rooms.length; i++){
             if(rooms[i][2] == begin){
                 start = rooms[i];
             }
         }
+
+        //Finds target node and its properties
         for(let i = 0; i < rooms.length; i++){
             if(rooms[i][2] == dest){
                 target = rooms[i];
             }
         }
-        //console.log(start[2] + "/" + target[2]);
-        let route = pathfind(start, target);
-        //console.log(route);
-        editroute(route);
+
+        let route = pathfind(start, target);//Get the path to render
+        editroute(route);//Use hook to set the path string, so the path renders
     }
+
+
     const changestart = () => {
         console.log("toggle");
         let entrances = [];
@@ -212,6 +248,7 @@ const IndoorMap = (props) => {
                     </View>
                     
                     :
+                    //Renders the top search bar which states the entrance that person came in through
                     <View style={styles.drop}>
                     <Text style={{marginLeft: 60, marginRight: 10}}>{begin}</Text>
                     <TouchableOpacity onPress={changestart}>
@@ -219,6 +256,7 @@ const IndoorMap = (props) => {
                     </TouchableOpacity>
                     </View>
                 }
+                {/*Renders the bottom search bar which states the room the person needs to go to*/}
              <View style={styles.searchbox2}>
                 <Text style={{marginLeft: 80}}>Destination: </Text>
                 <TextInput style={{marginLeft: 25}} placeholder="Enter Room Here"
@@ -248,14 +286,15 @@ const IndoorMap = (props) => {
             fill="yellow"
           />
           </Svg>*/}
-            {<ScrollView directionalLockEnabled={false} horizontal={true}>
+            {//Renders the indoor map based on the data that was saved
+            <ScrollView directionalLockEnabled={false} horizontal={true}>
             <ScrollView vertical={true}>
             <Svg height="900" width="900">
-                {rooms.map(room => <View>
+                {rooms.map(room => <G>
                     <Rect x={room[0] + ""} y={room[1] + ""} width="45" height="45" fill="#FF3333" />
                     <Textsvg x={(room[0]) + ""} y={(room[1] + 35) + ""} 
                     fontSize="13" text-anchor="middle" fontWeight="bold" fill="black">{room[2]}</Textsvg>
-                </View>)}
+                </G>)}
                 <Path d={route} stroke="green" strokeWidth="6" fill="none" /> 
                 
             </Svg>
