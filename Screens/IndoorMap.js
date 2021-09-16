@@ -5,9 +5,10 @@ import Svg, { Circle, Rect, Path, Polyline, G, Text as Textsvg, ForeignObject } 
 import { AntDesign } from '@expo/vector-icons';
 
 const IndoorMap = (props) => {
-    const rooms = props.inmap.rooms;
-    const path = props.inmap.path;
-    
+    const [rooms, changerooms] = useState(props.inmap.rooms);
+    const [path, changepath] = useState(props.inmap.path);
+    const [floornum, changefn] = useState(props.inmap.floor);
+    const [floors, changefloors] = useState(props.floors);
     const [begin, editbegin] = useState(props.entered);
     const [dest, editdest] = useState("");
     const [adjacenylist, editlst] = useState([]);
@@ -180,10 +181,14 @@ const IndoorMap = (props) => {
           }
         }
     }
+    const printfloors = () => {
+        console.log("This many floors" + floors.length);
+    }
     /*
         This function gets the string to generate the path and uses its hook so it can be rendered.
     */
     const getRoute = () => {
+        //printfloors()
         makeadjlst(); //Creates adjacency list for the pathfinding to run on
         let start = []; 
 
@@ -221,6 +226,31 @@ const IndoorMap = (props) => {
     const changeenter = (name) => {
         console.log(name);
         //editbegin()
+    }
+
+    const goupfloor = () => {
+        let atfloor = 0;
+        for(let i = 0; i < floors.length; i++){
+            atfloor = i;
+            if(floors[i].floor == floornum){
+                break;
+            }
+        }
+        changepath(floors[atfloor + 1].path);
+        changefn(floors[atfloor + 1].floor);
+        changerooms(floors[atfloor+1].rooms);
+    }
+    const godownfloor = () => {
+        let atfloor = 0;
+        for(let i = 0; i < floors.length; i++){
+            atfloor = i;
+            if(floors[i].floor == floornum){
+                break;
+            }
+        }
+        changepath(floors[atfloor-1].path);
+        changefn(floors[atfloor - 1].floor);
+        changerooms(floors[atfloor-1].rooms);
     }
     return (
         <View style={styles.container}>
@@ -289,7 +319,7 @@ const IndoorMap = (props) => {
             {//Renders the indoor map based on the data that was saved
             <ScrollView directionalLockEnabled={false} horizontal={true}>
             <ScrollView vertical={true}>
-            <Svg height="900" width="900">
+            <Svg height="500" width="700">
                 {rooms.map(room => <G>
                     <Rect x={room[0] + ""} y={room[1] + ""} width="45" height="45" fill="#FF3333" />
                     <Textsvg x={(room[0]) + ""} y={(room[1] + 35) + ""} 
@@ -301,6 +331,15 @@ const IndoorMap = (props) => {
             </ScrollView>
             </ScrollView>  
                 }
+            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+                <Text style={{fontSize: 30}}>Floor {floornum}</Text>
+                <TouchableOpacity onPress={goupfloor}>
+                    <AntDesign name="caretup" size={40} color="black" />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={godownfloor}>
+                    <AntDesign name="caretdown" size={40} color="black" />
+                </TouchableOpacity> 
+            </View>
         </View>
     );
 };

@@ -53,11 +53,13 @@ const Map = (props) => {
         that user went in through
     */
     const updateroom = (name) => {
+        let floors = [];
         for(let i = 0; i < indoordata.length; i++){
             if(buildingname == indoordata[i].building){
-                props.setShowIndoor(name, indoordata[i]);
+                floors.push(indoordata[i]);
             }
         }
+        props.setShowIndoor(name, floors[0], floors);
     }
     
     return (

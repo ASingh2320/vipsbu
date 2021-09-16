@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
        justifyContent: 'center',
        alignItems: 'center',
        position: 'absolute',
-       bottom: -680,
+       //bottom: -680,
        left: 250
     },
 
