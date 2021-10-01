@@ -39,7 +39,7 @@ const UseFeed = (props) => {
             <Text style = {styles.baseText}>Please describe your issue:</Text>
             <View>
             <TextInput multiline
-            numberOfLines={4} 
+            numberOfLines={4} //Update value for TextInput
                 value={feedtext} onChangeText={setFeed}/>
             </View>
             <View style = {{}}> 
