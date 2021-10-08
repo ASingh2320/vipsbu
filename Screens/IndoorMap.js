@@ -4,6 +4,7 @@ import { StyleSheet, Text, View, Button, TextInput, ScrollView, Dimensions, Touc
 import Svg, { Circle, Rect, Path, Polyline, G, Text as Textsvg, ForeignObject } from 'react-native-svg';
 import { AntDesign } from '@expo/vector-icons';
 
+//Test
 const IndoorMap = (props) => {
     const [floorpaths, editflpaths] = useState([]);
     const [startfloor, editstfl] = useState(props.inmap.floor);
