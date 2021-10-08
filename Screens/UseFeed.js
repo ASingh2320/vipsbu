@@ -3,7 +3,7 @@ import React, { useState, useEffect }  from 'react';
 import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
 
 const UseFeed = (props) => {
-    const[feedtext, setFeed] = useState("More details, the better!");
+    const[feedtext, setFeed] = useState("");
 
     const savefeedback = () => {
         //Once we set up database, this function will save feedback to database.
@@ -36,11 +36,10 @@ const UseFeed = (props) => {
                 <Button title= "map" onPress={props.setShowMap}/>
             </View>
             <Text style = {styles.titleText}> User Feedback</Text>
-            <Text style = {styles.baseText}>Please describe your issue:</Text>
             <View>
             <TextInput multiline
             numberOfLines={4} 
-                value={feedtext} onChangeText={setFeed}/>
+                value={feedtext} onChangeText={setFeed} placeholder="Please describe your issue"/>
             </View>
             <View style = {{}}> 
                 <Button title= "Submit" onPress={savefeedback} value={feedtext}/>

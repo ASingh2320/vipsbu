@@ -8,6 +8,8 @@ import { Feather } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons'; 
 import { FontAwesome5 } from '@expo/vector-icons';
 import buildcoor, {indoordata} from './mapdata';
+import * as Location from 'expo-location';
+
 /*
     This class renders the outdoor map.
     TODO: Add geolocation services, outdoor navigation
@@ -18,7 +20,8 @@ const Map = (props) => {
     const [lat, editlat] = useState( 40.91258279022605); //map's default latitude
     const [buildingname, editbname] = useState(""); //name of building that is centered
     const [indata, editin] = useState({});
-
+    const [location, setLocation] = useState(null);
+    const [errorMsg, setErrorMsg] = useState(null);
 
     const buildings = buildcoor;
     const GOOGLE_MAPS_APIKEY = '';
@@ -29,6 +32,19 @@ const Map = (props) => {
     const [searchroom, togglesr] = useState(false);
     
    const [entrances, editenter] = useState([]);
+
+   useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        setErrorMsg('Permission to access location was denied');
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation(location);
+    })();
+  }, []);
 
     /*
         Searches for matching building name from text submitted from the searchbar
@@ -61,10 +77,17 @@ const Map = (props) => {
         }
         props.setShowIndoor(name, floors[0], floors);
     }
-    
+    const getloc = async() => {
+        let location2 = await Location.getCurrentPositionAsync({});
+        setLocation(location2);
+    }
     return (
         <View>
             <View>
+                <View style={{paddingTop: 100}}>
+                <Text>{JSON.stringify(location)}</Text>
+                <Button title = "Start Nav" onPress={getloc}></Button>
+                </View>
                 {/*This is the Map component that renders the react native map*/}
                 <MapView style={styles.map} 
                 region = {{
