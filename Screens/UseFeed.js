@@ -1,9 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect }  from 'react';
-import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
+import { StyleSheet, Text, View, Button, Picker, TextInput } from 'react-native';
 
 const UseFeed = (props) => {
-    const[feedtext, setFeed] = useState("More details, the better!");
+    const[feedtext, setFeed] = useState("");
 
     const savefeedback = () => {
         //Once we set up database, this function will save feedback to database.
@@ -36,11 +36,20 @@ const UseFeed = (props) => {
                 <Button title= "map" onPress={props.setShowMap}/>
             </View>
             <Text style = {styles.titleText}> User Feedback</Text>
-            <Text style = {styles.baseText}>Please describe your issue:</Text>
             <View>
-            <TextInput multiline
-            numberOfLines={4} //Update value for TextInput
-                value={feedtext} onChangeText={setFeed}/>
+            {/* FlatList goes here*/}
+            <View>
+                <Text style = {styles.baseText}>Select your issue:</Text>
+                <Picker placeholder = "Select an option">
+                    <Picker.Item label = "Outdoor Navigation" value="Outdoor Navigation"/>
+                    <Picker.Item label="Indoor Navigation" value ="Indoor Navigation"/>
+                    <Picker.Item label="Logging In" value ="Logging In"/>
+                    <Picker.Item label="Other" value ="Other"/>
+                </Picker>
+            </View>    
+            <Text style = {styles.baseText}>Please describe your issue:</Text>
+            <TextInput style={styles.textBox} multiline numberOfLines={10} //Update value for TextInput
+                value={feedtext} onChangeText={setFeed} placeholder="Enter text here"/>
             </View>
             <View style = {{}}> 
                 <Button title= "Submit" onPress={savefeedback} value={feedtext}/>
@@ -50,10 +59,26 @@ const UseFeed = (props) => {
 };
 const styles = StyleSheet.create({
     baseText: {
+        fontSize: 20,
+        fontWeight: '500',
+        paddingLeft: 21
     },
     titleText: {
-      fontSize: 20,
-      fontWeight: "bold"
+      textAlign: 'center',
+      fontSize: 30,
+      fontWeight: "bold",
+      paddingBottom: 10
+    },
+    textBox: {
+        height: 175,
+        borderWidth: 1.5,
+        borderRadius: 10,
+        borderColor: 'black',
+        padding: 10,
+        paddingTop: 10,
+        margin: 10,
+        marginLeft: 20,
+        width: 350
     }
   });
 /*
