@@ -10,108 +10,14 @@ const IndoorMap = (props) => {
     const [startfloor, editstfl] = useState(props.inmap.floor);
     const [rooms, changerooms] = useState(props.inmap.rooms);
     const [path, changepath] = useState(props.inmap.path);
-    const [pathlevels, pledit] = useState([""]);
     const [floornum, changefn] = useState(props.inmap.floor);
     const [floors, changefloors] = useState(props.floors);
     const [begin, editbegin] = useState(props.entered);
     const [dest, editdest] = useState("");
-    const [adjacenylist, editlst] = useState([]);
     const [dropdown, editdrop] = useState(false);
     const [entrs, editentr] = useState([]);
-    const [selectedLanguage, setSelectedLanguage] = useState();
-    const[route, editroute] = useState("");
-    const [intermediate, editimed] = useState("");
-    const [actualtarget, editac] = useState("");
-    const [actualfloor, editaf] = useState("");
     const boxsize = 50;
     
-    /*
-        This function creates the adjacency list that the path finding function uses
-
-        TODO: Make this function follow DRY principle
-              When backend code is added, put this in a useEffect
-    */
-    const makeadjlst = () => {
-        let graph = [];// variable that holds rooms and path nodes
-
-        //Put path nodes and room nodes in graph
-        path.forEach(x => graph.push(x));
-        rooms.forEach(x => graph.push(x));
-
-        let adjlst = [];// Initialize adjacency list
-        for(let i = 0; i < graph.length; i++){
-            adjlst.push([graph[i]]);//push a node from the graph to start a new row 
-
-            //look right
-            let findx = graph[i][0] + boxsize;
-            let findy = graph[i][1] + 0;
-            let found = graph.find(x => (x[0] == findx) && (x[1] == findy));
-            if(found){
-                adjlst[i].push(found)//If an adjacent node is found push it into the row
-            }
-            //look bottomright
-            findx = graph[i][0] + boxsize;
-            findy = graph[i][1] + boxsize;
-            found = graph.find(x => (x[0] == findx) && (x[1] == findy));
-            if(found){
-                adjlst[i].push(found)
-            }
-            //look bottom
-            findx = graph[i][0] + 0;
-            findy = graph[i][1] + boxsize;
-            found = graph.find(x => (x[0] == findx) && (x[1] == findy));
-            if(found){
-                adjlst[i].push(found)
-            }
-            //look bottomleft
-            findx = graph[i][0] - boxsize;
-            findy = graph[i][1] + boxsize;
-            found = graph.find(x => (x[0] == findx) && (x[1] == findy));
-            if(found){
-                adjlst[i].push(found)
-            }
-            //look left
-            findx = graph[i][0] - boxsize;
-            findy = graph[i][1] - 0;
-            found = graph.find(x => (x[0] == findx) && (x[1] == findy));
-            if(found){
-                adjlst[i].push(found)
-            }
-            //look topleft
-            findx = graph[i][0] - boxsize;
-            findy = graph[i][1] - boxsize;
-            found = graph.find(x => (x[0] == findx) && (x[1] == findy));
-            if(found){
-                adjlst[i].push(found)
-            }
-            //look top
-            findx = graph[i][0] - 0;
-            findy = graph[i][1] - boxsize;
-            found = graph.find(x => (x[0] == findx) && (x[1] == findy));
-            if(found){
-                adjlst[i].push(found)
-            }
-            //look topright
-            findx = graph[i][0] + boxsize;
-            findy = graph[i][1] - boxsize;
-            found = graph.find(x => (x[0] == findx) && (x[1] == findy));
-            if(found){
-                adjlst[i].push(found)
-            }
-        }
-        let printstmt = "Adjacency list created\n";
-        
-        for(let i = 0; i < adjlst.length; i++){
-            for(let j = 0; j < adjlst[i].length; j++){
-                printstmt= printstmt + adjlst[i][j] + " ";
-            }
-            printstmt = printstmt + "\n";
-        }
-        printstmt= printstmt + "end\n";
-        editlst(adjlst);// Set hook to save adjacency list
-        //console.log(printstmt);
-        //editprint(printstmt);    
-    }
     /* 
         @param path: array that represents a path that will be rendered
 
@@ -128,66 +34,7 @@ const IndoorMap = (props) => {
         }
         return true;
     }
-    /*
-        @param start: array that represents the node where the path starts
-        @param target: array that represents the node where the path ends
 
-        @return String value that represents the path that will be rendered
-
-        Breadth first pathfinding algorithm to generate a path between rooms, entrances, etc.
-    */
-    const pathfind = (start, target) =>{
-        let queue = []; //Initalize queue which keeps track of the paths generated
-        let path = [start]; //Initialize a path with just the starting node
-        queue.push(path); //Push the path with just the starting node into the queue
-      
-        while(queue.length != 0){
-          path = queue.shift(); //Take out the first path in the queue
-
-          //If the path ends with the target node and is valid path (only goes through path nodes), return that path
-          if(path[path.length-1][0] == target[0] && path[path.length-1][1] == target[1] && validpath(path)){
-            let result = "";
-            for(let i = 0; i < path.length; i++){
-                if(i == 0){
-                    result = result + "M" + (path[i][0] + boxsize/2) + " " + (path[i][1] + boxsize/2) + " ";
-                }
-                else{
-                    result = result + "L" + (path[i][0] + boxsize/2) + " " + (path[i][1] + boxsize/2) + " ";
-                }
-                
-            }
-            return result;
-          }
-          let adjnodes = [];//Initialize an array to store all of the adjacent nodes
-          for(let i = 0; i < adjacenylist.length; i++){
-            if(path[path.length-1][0] == adjacenylist[i][0][0] && path[path.length-1][1] == adjacenylist[i][0][1]){
-              //Once the last node in the path is found in adjacency list push all adjacenct nodes into adjnodes 
-              adjacenylist[i].forEach(x => adjnodes.push(x));
-              adjnodes.shift();//Takes out the first node which is the last node of the path, so adjnodes only contains adjacent nodes
-            }
-          }
-          //Loop through each of the adjnodes
-          for(let i = 0; i < adjnodes.length; i++){
-            let checked = false;
-            //Loop though the path to see if the node is already in the path
-            for(let j = 0; j < path.length; j++){
-              if(path[j][0] == adjnodes[i][0] && path[j][1] == adjnodes[i][1]){
-                checked = true;
-              }
-            }
-            //If the node is not already in the path then we want to create a new path with tha node
-            if(checked == false){
-              let newpath = [];//Initialize newpath
-              //Create a new path with the new adjacent node
-              path.forEach(x => newpath.push(x));
-              newpath.push(adjnodes[i]);
-
-              queue.push(newpath);//Push the new path into the queue to be checked
-            }
-      
-          }
-        }
-    }
     const multilevelsearch = () => {
         for(let i = 0; i < floors.length; i++){
             for(let j = 0; j < floors[i].rooms.length; j++){
@@ -199,7 +46,12 @@ const IndoorMap = (props) => {
         return null;
     }
     
+    /*
+        This function creates the adjacency list that the path finding function uses
 
+        TODO: Make this function follow DRY principle
+              When backend code is added, put this in a useEffect
+    */
     const makeflooradjlst = (floorpath, floorrooms) => {
         let graph = [];// variable that holds rooms and path nodes
 
@@ -277,12 +129,31 @@ const IndoorMap = (props) => {
             printstmt = printstmt + "\n";
         }
         printstmt= printstmt + "end\n";
-        return adjlst;
-        //editlst(adjlst);// Set hook to save adjacency list
-        //console.log(printstmt);
-        //editprint(printstmt);    
+        return adjlst;    
     }
+    //Helper function to see if the path loops at any point
+    const nocycle = (path) =>{
+        let lastoccur = [];
+        for(let i = 0; i < path.length; i++){
+            lastoccur[path[i]] = i;
+        }
+        //console.log("lolllllll\n");
+        //console.log(lastoccur);
+        for(let i = 0; i < path.length; i++){
+            if(lastoccur[path[i]] != i)
+                return false;
+        }
+        return true;
+    }
+    /*
+        @param start: array that represents the node where the path starts
+        @param target: array that represents the node where the path ends
+        @param flooradjacencylist: adjacency list of the floor on which pathfinding is done
 
+        @return String value that represents the path that will be rendered
+
+        Breadth first pathfinding algorithm to generate a path between rooms, entrances, etc.
+    */
     const floorpathfind = (start, target, flooradjacencylist) =>{
         let queue = []; //Initalize queue which keeps track of the paths generated
         let path = [start]; //Initialize a path with just the starting node
@@ -328,8 +199,8 @@ const IndoorMap = (props) => {
               //Create a new path with the new adjacent node
               path.forEach(x => newpath.push(x));
               newpath.push(adjnodes[i]);
-
-              queue.push(newpath);//Push the new path into the queue to be checked
+              if(nocycle(newpath))
+                queue.push(newpath);//Push the new path into the queue to be checked
             }
       
           }
@@ -342,11 +213,13 @@ const IndoorMap = (props) => {
         let z = Math.sqrt(x + y);
         return z;
     }
-
+    /*
+        This function gets the string to generate the path and uses its hook so it can be rendered.
+        TODO: ADD proximity stair/ELevator search
+    */
     const getBuildingRoute = () => {
         let secondfloor = multilevelsearch();
         if(secondfloor.floor == startfloor){
-            console.log("LOLLLLLLLLs");
             let startone = [];
             for(let i = 0; i < secondfloor.rooms.length; i++){
                 if(secondfloor.rooms[i][2] == begin){
@@ -363,11 +236,9 @@ const IndoorMap = (props) => {
             let flpath = floorpathfind(startone, secondone, adjlst);
             let floorpaths = [];
             floorpaths[secondfloor.floor] = flpath;
-            console.log(flpath);
             editflpaths(floorpaths);
             return;
         }
-        //console.log(secondfloor);
         let floorchangemech = [];
         for(let i = 0; i < rooms.length; i++){
             if(rooms[i][2].includes("ELE") || rooms[i][2].includes("STR")){
@@ -411,52 +282,8 @@ const IndoorMap = (props) => {
         let secondpath = floorpathfind(secondstart, secondend, secondadjlst);
         floorpaths[secondfloor.floor] = secondpath;
         editflpaths(floorpaths);
-
-
     }
-    /*
-        This function gets the string to generate the path and uses its hook so it can be rendered.
-        TODO: ADD proximity stair/ELevator search
-    */
-    const getRoute = () => {
-        console.log("!!!!!!!!!!!!!!!!!!!!Begin is " + begin + " Dest is " + dest);
-        let mult = multilevelsearch();
-        if(mult[0] != "-1"){
-            let firsttransport = [];
-            for(let i = 0; i < rooms.length; i++){
-                if(rooms[i][2].includes("ELE") || rooms[i][2].includes("STR")){
-                    firsttransport.push(rooms[i]);
-                }
-            }
-            editimed(firsttransport[0][2]);
-            console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Dest is " + dest);
-            editac(dest);
-            editdest(firsttransport[0][2]);
-            editaf(mult[0]);
-        }
-        //console.log(mult);
-        makeadjlst(); //Creates adjacency list for the pathfinding to run on
-        let start = []; 
-        let target = [];
-        //Finds the start node and its properties
-        for(let i = 0; i < rooms.length; i++){
-            if(rooms[i][2] == begin){
-                start = rooms[i];
-            }
-        }
-
-        //Finds target node and its properties
-        for(let i = 0; i < rooms.length; i++){
-            if(rooms[i][2] == dest){
-                target = rooms[i];
-            }
-        }
-
-        let route = pathfind(start, target);//Get the path to render
-        console.log(route);
-        editroute(route);//Use hook to set the path string, so the path renders
-    }
-
+    
 
     const changestart = () => {
         console.log("toggle");
