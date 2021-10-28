@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, Button, TextInput, ScrollView, Dimensions, Touc
 import Svg, { Circle, Rect, Path, Polyline, G, Text as Textsvg, ForeignObject } from 'react-native-svg';
 import { AntDesign } from '@expo/vector-icons';
 
-//Test
+
 const IndoorMap = (props) => {
     const [floorpaths, editflpaths] = useState([]);
     const [startfloor, editstfl] = useState(props.inmap.floor);
@@ -328,10 +328,23 @@ const IndoorMap = (props) => {
     }
     return (
         <View style={styles.container}>
+             {/*Renders the bottom search bar which states the room the person needs to go to*/}
+             <View style={styles.searchbox2}>
+                <Text style={{marginLeft: 80}}>Start: </Text>
+                <TextInput style={{marginLeft: 65}} 
+                value={begin}
+                returnKeyType="search"
+                placeholderTextColor='#FFFFFF'
+                onChangeText={editbegin}
+                onSubmitEditing={getBuildingRoute}
+                //onBlur={getBuildingRoute}
+                />
+             </View>
+            {/*
             <View style={styles.searchbox}>
                 <Text style={{top: 15, left: 120}}>Start: </Text>
              </View>
-             {
+             
                     dropdown ? 
                     <View style={styles.drop2}>
                         {
@@ -359,7 +372,7 @@ const IndoorMap = (props) => {
                         <AntDesign name="downcircle" size={24} color="black" />
                     </TouchableOpacity>
                     </View>
-                }
+                */}
                 {/*Renders the bottom search bar which states the room the person needs to go to*/}
              <View style={styles.searchbox2}>
                 <Text style={{marginLeft: 80}}>Destination: </Text>
@@ -371,25 +384,6 @@ const IndoorMap = (props) => {
                 //onBlur={getBuildingRoute}
                 />
              </View>
-             {/*<Svg height="50%" width="50%" viewBox="0 0 100 100">
-          <Circle
-            cx="50"
-            cy="50"
-            r="45"
-            stroke="blue"
-            strokeWidth="2.5"
-            fill="green"
-          />
-          <Rect
-            x="15"
-            y="15"
-            width="70"
-            height="70"
-            stroke="red"
-            strokeWidth="2"
-            fill="yellow"
-          />
-          </Svg>*/}
             {//Renders the indoor map based on the data that was saved
             <ScrollView directionalLockEnabled={false} horizontal={true}>
             <ScrollView vertical={true}>
@@ -473,11 +467,3 @@ const styles = StyleSheet.create({
 
 
 export default IndoorMap;
-/*
-                 rooms.map(room => <Rect x={room[0] + ""} y={room[1] + ""} width="20" height="20" fill="blue">
-                     <Textsvg x="12.5" y="25" text-anchor="middle" fontWeight="bold" fill="black">lol</Textsvg>
-                 </Rect>)
-                */
-
-/*
-                    */
